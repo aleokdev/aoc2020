@@ -10,4 +10,9 @@ edition = "2018"
 name = "puzzle1"
 path = "src/puzzle1.rs"
 
+[[bin]]
+name = "puzzle2"
+path = "src/puzzle2.rs"
+
 [dependencies]
+regex = "1.4.2"
