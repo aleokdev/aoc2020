@@ -24,9 +24,9 @@ fn main() {
             tx %= line.len();
         }
 
-        println!("{}", trees);
+        println!("Slope {{{}, {}}}: {}", slope_x, slope_y, trees);
         result *= trees;
     }
 
-    println!("{}", result);
+    println!("Result: {}", result);
 }
