@@ -14,13 +14,13 @@ fn main() {
         vec!["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"].into_iter().collect::<HashSet<&'static str>>()
     }
 
-    let mut fields = required_fields();
+    let mut missing_fields = required_fields();
     let mut valid_passports = 0;
     for line in cursor.lines() {
         let line = line.unwrap();
 
         if line.is_empty() {
-            fields = required_fields();
+            missing_fields = required_fields();
         } else {
             for field in reg.find_iter(line.as_str()) {
                 let f_str = field.as_str().trim();
@@ -67,9 +67,9 @@ fn main() {
                     },
                     _ => false,
                 };
-                if valid { fields.retain(|x| x != &f_name); }
-                if fields.len() == 0 {
-                    fields = required_fields();
+                if valid { missing_fields.retain(|x| x != &f_name); }
+                if missing_fields.len() == 0 {
+                    missing_fields = required_fields();
                     valid_passports = valid_passports + 1;
                 }
             }
