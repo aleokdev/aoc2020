@@ -30,5 +30,9 @@ path = "src/puzzle5.rs"
 name = "puzzle6"
 path = "src/puzzle6.rs"
 
+[[bin]]
+name = "puzzle7"
+path = "src/puzzle7.rs"
+
 [dependencies]
 regex = "1.4.2"
