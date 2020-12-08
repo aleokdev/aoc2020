@@ -6,25 +6,11 @@ use regex::Regex;
 use std::str::FromStr;
 use std::collections::HashSet;
 
-struct Instruction {
-    op: String,
-    offset: i32
-}
+#[macro_use] mod instructions;
+use instructions::*;
 
 fn main() {
-    let cursor = Cursor::new(include_str!("inputs/puzzle8.txt"));
-    let re = Regex::new(r"([^ ]+) (.+)").unwrap();
-    let mut instructions = Vec::new();
-    for line in cursor.lines() {
-        let line = line.unwrap();
-        let captures = re.captures(line.as_str()).unwrap();
-        instructions.push(
-            Instruction {
-                op: String::from(captures.get(1).unwrap().as_str()),
-                offset: i32::from_str(captures.get(2).unwrap().as_str()).unwrap()
-            }
-        );
-    }
+    let mut instructions = read_instructions!("inputs/puzzle8.txt");
 
     // no part 1 for you
 
@@ -39,15 +25,15 @@ fn main() {
                 return None;
             }
 
-            match ins.op.as_str() {
-                "acc" => {
-                    acc += ins.offset;
+            match ins {
+                Instruction::Acc(offset) => {
+                    acc += offset;
                 },
-                "jmp" => {
-                    pc += ins.offset;
+                Instruction::Jmp(offset) => {
+                    pc += offset;
                     continue;
                 },
-                "nop" => (),
+                Instruction::Nop(_) => (),
                 _ => unreachable!()
             }
             pc += 1;
@@ -63,23 +49,23 @@ fn main() {
             panic!();
         }
 
-        match ins.op.as_str() {
-            "acc" => {
-                acc += ins.offset;
+        match ins {
+            Instruction::Acc(offset) => {
+                acc += offset;
             },
-            "jmp" => {
+            Instruction::Jmp(offset) => {
                 // Try to change the jmp into a nop
                 if let Some(x) = try_jmp(&instructions, pc + 1, acc) {
                     acc = x;
                     break;
                 } else {
-                    pc += ins.offset;
+                    pc += offset;
                     continue;
                 }
             },
-            "nop" => {
+            Instruction::Nop(offset) => {
                 // Try to change the nop into a jmp
-                if let Some(x) = try_jmp(&instructions, pc + ins.offset, acc) {
+                if let Some(x) = try_jmp(&instructions, pc + offset, acc) {
                     acc = x;
                     break;
                 }
