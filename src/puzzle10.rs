@@ -12,9 +12,10 @@ fn main() {
         let line = line.unwrap();
         adapters.push(usize::from_str(line.as_str()).unwrap());
     }
-
     adapters.sort();
     adapters.insert(0, 0);
+
+    // Part 1
     let mut diff1 = 0;
     let mut diff3 = 1;
     let mut last_adapter = 0;
@@ -29,7 +30,7 @@ fn main() {
     }
     println!("1 diff: {}, 3 diff: {}. Mult: {}", diff1, diff3, diff1 * diff3);
 
-    let mut arrangements = 1;
+    // Part 2
     let mut paths = Vec::new();
     paths.resize(adapters.len(), 0usize);
     paths[0] = 1usize;
